@@ -24,7 +24,7 @@ public class EmployeeApplication implements Serializable {
 
     @Inject private Employee toBeAddedEmployee;
 
-    public static Employee currentEmployee;
+    public Employee currentEmployee;
     private List<EditableEmployee> list;
     private Employee employeeToBeChanged = null;
 
