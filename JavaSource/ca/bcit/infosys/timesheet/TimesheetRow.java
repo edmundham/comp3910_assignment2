@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -22,8 +20,7 @@ public class TimesheetRow implements Serializable {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long timesheetRowId;
 
-    @OneToMany
-    @JoinColumn(name="timesheetid")
+    @Column(name="timesheetid")
     private Long timesheetId;
 
     @Column(name="projectid")

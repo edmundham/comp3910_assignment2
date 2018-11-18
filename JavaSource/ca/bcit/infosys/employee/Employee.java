@@ -34,7 +34,7 @@ public class Employee implements Serializable {
     private Date createdDate;
 
     @Column(name="isadmin")
-    private Boolean isAdmin;
+    private boolean admin;
 
     public Employee() {
 
@@ -80,12 +80,12 @@ public class Employee implements Serializable {
         this.createdDate = createdDate;
     }
 
-    public Boolean getIsAdmin() {
-        return isAdmin;
+    public boolean isAdmin() {
+        return admin;
     }
 
-    public void setIsAdmin(Boolean isAdmin) {
-        this.isAdmin = isAdmin;
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
 }

@@ -3,10 +3,16 @@ package ca.bcit.infosys.timesheet;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.ejb.Stateless;
+import javax.enterprise.context.Dependent;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import ca.bcit.infosys.employee.Employee;
+
+@Dependent
+@Stateless
 public class TimesheetController implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,6 +42,13 @@ public class TimesheetController implements Serializable {
 
     public List<Timesheet> getAll() {
         Query query = em.createNativeQuery("select * from Timesheet order by TimesheetId", Timesheet.class);
+        return query.getResultList();
+    }
+
+    public List<Timesheet> getTimesheetByEmployee(Employee employee) {
+        Query query = em.createNativeQuery("select * from Timesheet where employeeid=:employeeid"
+                + "order by startweek asc", Timesheet.class);
+        query.setParameter(":employeeid", employee.getEmployeeId());
         return query.getResultList();
     }
 

@@ -22,17 +22,17 @@
 				<h4>#{msgs.user_info}</h4>
 					<div class="form-group">
 						<label for="profileName">#{msgs.name}</label>
-						<h:outputText value="#{employeeTracker.currentEmployee.name}"
+						<h:outputText value="#{employeeApplication.currentEmployee.name}"
 							class="form-control" id="profileName" />
 					</div>
 					<div class="form-group">
 						<label for="profileEmpNumber">#{msgs.employee_number}</label>
-						<h:outputText value="#{employeeTracker.currentEmployee.empNumber}"
+						<h:outputText readonly="true" value="#{employeeApplication.currentEmployee.employeeId}"
 							class="form-control" id="profileEmpNumber" />
 					</div>
 					<div class="form-group">
 						<label for="profileUsername">#{msgs.username}</label>
-						<h:outputText value="#{employeeTracker.currentEmployee.userName}"
+						<h:outputText value="#{employeeApplication.currentEmployee.userName}"
 							class="form-control" id="profileUsername" />
 					</div>
 					<h:form>
@@ -41,18 +41,18 @@
 					<div class="form-group">
 						<label for="profileOldPassword">#{msgs.old_password}</label>
 						<p:password
-							value="#{employeeTracker.oldPassword}"
+							binding="#{oldPassword}"
 							class="form-control" id="profileOldPassword" />
 					</div>
 					<div class="form-group">
 						<label for="profileNewPassword">#{msgs.new_password}</label>
 						<p:password feedback="true" inline="true"
-							value="#{employeeTracker.newPassword}"
+							binding="#{newPassword}"
 							class="form-control" id="profileNewPassword" />
 					</div>
 					<p:commandLink id="updateButton" value="#{msgs.update}"
 						ajax="false" styleClass="btn btn-primary"
-						action="#{employeeTracker.updateEmployee(employeeTracker.oldPassword, employeeTracker.newPassword)}" update="growl"/>
+						action="#{employeeApplication.updateEmployee(oldPassword.value, newPassword.value)}" update="growl"/>
 				</h:form>
 			</div>
 		</ui:define>

@@ -1,7 +1,9 @@
 package ca.bcit.infosys;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
@@ -21,11 +23,16 @@ public class EmployeeApplication implements Serializable {
     @Inject private EmployeeController employeeController;
 
     @Inject private Employee toBeAddedEmployee;
-    private List<EditableEmployee> list;
 
-    public List<EditableEmployee> getList() {
-        if (list == null) {
+    private Employee currentEmployee;
+    private List<EditableEmployee> list;
+    private Employee employeeToBeChanged = null;
+
+    public List<EditableEmployee> getList() throws Exception {
+        if (currentEmployee.isAdmin()) {
             list = refreshList();
+        } else {
+            throw new Exception("Current employee is not admin");
         }
         return list;
     }
@@ -41,6 +48,22 @@ public class EmployeeApplication implements Serializable {
 
     public void setList(List<EditableEmployee> editableEmployee) {
         list = editableEmployee;
+    }
+
+    public Employee getCurrentEmployee() {
+        return currentEmployee;
+    }
+
+    public void setCurrentEmployee(Employee currentEmployee) {
+        this.currentEmployee = currentEmployee;
+    }
+
+    public Employee getEmployeeToBeChanged() {
+        return employeeToBeChanged;
+    }
+
+    public void setEmployeeToBeChanged(Employee employeeToBeChanged) {
+        this.employeeToBeChanged = employeeToBeChanged;
     }
 
     public String deleteRow(EditableEmployee e) {
@@ -59,16 +82,61 @@ public class EmployeeApplication implements Serializable {
         return "";
     }
 
-    public String add() {
-        for (EditableEmployee e : list) {
-            if (e.getEmployee().getEmployeeId() == toBeAddedEmployee.getEmployeeId()) {
-                return null;
-            }
+    public String addNewUser(String name, String username, String password) {
+        if (!currentEmployee.isAdmin()) {
+            return null;
         }
-        employeeController.add(toBeAddedEmployee);
-        list.add(new EditableEmployee(toBeAddedEmployee));
-        toBeAddedEmployee = null;
+        Employee addedEmployee = new Employee();
+        addedEmployee.setName(name);
+        addedEmployee.setUserName(username);
+        addedEmployee.setPassword(password);
+        addedEmployee.setCreatedDate(new Date(Calendar.getInstance().getTime().getTime()));
+        employeeController.add(addedEmployee);
+        list.add(new EditableEmployee(addedEmployee));
         return "";
+    }
+
+    public String login(String userName, String password) {
+        currentEmployee = employeeController.login(userName, password);
+        System.out.println(currentEmployee.isAdmin());
+        return currentEmployee.isAdmin() ? "admin" : "success";
+    }
+
+    public String logout() {
+        currentEmployee = null;
+        return "logoutSuccess";
+    }
+
+    public String editPasswordButton(Employee employee) {
+        if (!currentEmployee.isAdmin()) {
+            return null;
+        }
+        employeeToBeChanged = employee;
+        return "edit";
+    }
+
+    public String editOneUserPassword() {
+        employeeController.merge(employeeToBeChanged);
+        return "adminSuccess";
+    }
+
+    public String deleteEmployee(EditableEmployee employee) {
+        if (!currentEmployee.isAdmin()) {
+            return null;
+        }
+        employeeController.remove(employee.getEmployee());
+        list.remove(employee);
+        return null;
+    }
+
+    public String updateEmployee(String oldPassword, String password) {
+        if (!currentEmployee.getPassword().equals(oldPassword)) {
+            return null;
+        }
+        employeeToBeChanged = currentEmployee;
+        employeeToBeChanged.setPassword(password);
+        employeeController.merge(employeeToBeChanged);
+        return "landing";
     }
 
 }
