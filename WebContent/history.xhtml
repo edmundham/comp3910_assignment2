@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui">
+
+<head>
+    <title>#{msgs.history_title}</title>
+</head>
+
+<body>
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			#{msgs.history_title}
+		</ui:define>
+		<ui:define name="pageTitle">
+			#{msgs.history_title}
+		</ui:define>
+		<ui:define name="content">
+			
+            <h3>#{msgs.history_title}</h3>
+                <p:accordionPanel dynamic="true" cache="true" multiple="true"
+                                  value="#{timesheetTracker.getTimesheets(employeeTracker.currentEmployee)}"
+                                  var="employeeTimesheet">
+                    <p:tab title="#{timesheetApplication.formatDate(employeeTimesheet.startWeek)} - #{timesheetApplication.formatDate(employeeTimesheet.endWeek)}">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p:dataTable var="detail" value="#{employeeTimesheet.details}">
+                                <p:column headerText="#{msgs.project_id}">
+                                    <h:outputText value="#{detail.projectID}"/>
+                                </p:column>
+                                <p:column headerText="#{msgs.work_package}">
+                                    <h:outputText value="#{detail.workPackage}"/>
+                                </p:column>
+                                <p:column headerText="#{msgs.total}" footerText="#{employeeTimesheet.getTotalHours()}">
+                                    <h:outputText value="#{detail.sum}"/>
+                                </p:column>
+                                <p:column headerText="#{msgs.sat}" footerText="#{employeeTimesheet.getDailyHours()[0]}">
+                                    <h:outputText value="#{detail.hoursForWeek[0]}"/>
+                                </p:column>
+                                <p:column headerText="#{msgs.sun}" footerText="#{employeeTimesheet.getDailyHours()[1]}">
+                                    <h:outputText value="#{detail.hoursForWeek[1]}"/>
+                                </p:column>
+                                <p:column headerText="#{msgs.mon}" footerText="#{employeeTimesheet.getDailyHours()[2]}">
+                                    <h:outputText value="#{detail.hoursForWeek[2]}"/>
+                                </p:column>
+                                <p:column headerText="#{msgs.tue}" footerText="#{employeeTimesheet.getDailyHours()[3]}">
+                                    <h:outputText value="#{detail.hoursForWeek[3]}"/>
+                                </p:column>
+                                <p:column headerText="#{msgs.wed}" footerText="#{employeeTimesheet.getDailyHours()[4]}">
+                                    <h:outputText value="#{detail.hoursForWeek[4]}"/>
+                                </p:column>
+                                <p:column headerText="#{msgs.thu}" footerText="#{employeeTimesheet.getDailyHours()[5]}">
+                                    <h:outputText value="#{detail.hoursForWeek[5]}"/>
+                                </p:column>
+                                <p:column headerText="#{msgs.fri}" footerText="#{employeeTimesheet.getDailyHours()[6]}">
+                                    <h:outputText value="#{detail.hoursForWeek[6]}"/>
+                                </p:column>
+                                <p:column headerText="#{msgs.note}">
+                                    <h:outputText value="#{detail.notes}"/>
+                                </p:column>
+                                
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:tab>
+                </p:accordionPanel>
+            
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

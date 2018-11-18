@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<title>IGNORED</title>
+</h:head>
+
+<h:body>
+
+	<ui:composition>
+		<h:form>
+			<div class="navbar navbar-default">
+				<h:commandLink class="navbar-brand" value="#{msgs.site_name}"
+					action="landing" />
+				<ul class="nav navbar-nav">
+					<li><h:commandLink value="#{msgs.nav_fill_timesheet}"
+							action="currentTimesheet" /></li>
+					<li><h:commandLink value="#{msgs.nav_history}"
+							action="history" /></li>
+					<li><h:commandLink value="#{msgs.nav_profile}"
+							action="profile" /></li>
+					<li><h:commandLink value="#{msgs.nav_admin}" action="admin"
+							rendered="#{employeeTracker.isAdmin(employeeTracker.currentEmployee.userName)}" /></li>
+					<li><h:commandLink value="#{msgs.nav_logout}"
+							action="#{employeeTracker.logout(employeeTracker.currentEmployee)}" /></li>
+				</ul>
+
+				<div class="user-info text-right">
+					<strong>#{employeeTracker.currentEmployee.name}: </strong>
+					<h:outputText
+						value="( #{msgs.emp_num} #{employeeTracker.currentEmployee.empNumber} )"
+						class="text-muted" />
+				</div>
+
+			</div>
+		</h:form>
+	</ui:composition>
+
+</h:body>
+</html>

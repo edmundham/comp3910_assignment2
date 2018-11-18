@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<head>
+<title>IGNORED</title>
+</head>
+
+<body>
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			#{msgs.nav_profile}
+		</ui:define>
+		<ui:define name="pageTitle">
+			#{msgs.nav_profile}
+		</ui:define>
+		<ui:define name="content">
+			<div id="profileWrapper" class="center-block well">
+				<h4>#{msgs.user_info}</h4>
+					<div class="form-group">
+						<label for="profileName">#{msgs.name}</label>
+						<h:outputText value="#{employeeTracker.currentEmployee.name}"
+							class="form-control" id="profileName" />
+					</div>
+					<div class="form-group">
+						<label for="profileEmpNumber">#{msgs.employee_number}</label>
+						<h:outputText value="#{employeeTracker.currentEmployee.empNumber}"
+							class="form-control" id="profileEmpNumber" />
+					</div>
+					<div class="form-group">
+						<label for="profileUsername">#{msgs.username}</label>
+						<h:outputText value="#{employeeTracker.currentEmployee.userName}"
+							class="form-control" id="profileUsername" />
+					</div>
+					<h:form>
+					<p:growl id="growl" showDetail="true" life="3000" />
+					<h4>#{msgs.update_password}</h4>
+					<div class="form-group">
+						<label for="profileOldPassword">#{msgs.old_password}</label>
+						<p:password
+							value="#{employeeTracker.oldPassword}"
+							class="form-control" id="profileOldPassword" />
+					</div>
+					<div class="form-group">
+						<label for="profileNewPassword">#{msgs.new_password}</label>
+						<p:password feedback="true" inline="true"
+							value="#{employeeTracker.newPassword}"
+							class="form-control" id="profileNewPassword" />
+					</div>
+					<p:commandLink id="updateButton" value="#{msgs.update}"
+						ajax="false" styleClass="btn btn-primary"
+						action="#{employeeTracker.updateEmployee(employeeTracker.oldPassword, employeeTracker.newPassword)}" update="growl"/>
+				</h:form>
+			</div>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

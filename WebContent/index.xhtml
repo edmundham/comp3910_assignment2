@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+
+<h:body>
+
+	<ui:composition template="/templates/loginMasterLayout.xhtml">
+		<ui:define name="windowTitle">
+			#{msgs.login}
+		</ui:define>
+		<ui:define name="content">
+			<div id="loginWrapper" class="center-block well">
+				<h4>#{msgs.login}</h4>
+				<h:form id="loginform">
+				<p:growl id="growl" showDetail="true" life="3000" />
+					<div class="form-group">
+						<label for="username">#{msgs.username}</label>
+						<p:inputText value="#{credentials.userName}" class="form-control"
+							id="username" />
+					</div>
+					<div class="form-group">
+						<label for="password">#{msgs.password}</label>
+						<p:password value="#{credentials.password}"
+							class="form-control" id="password" />
+					</div>
+
+					<p:commandButton id="loginbutton" value="#{msgs.login}"
+						styleClass="btn btn-primary"
+						action="#{timesheetApplication.login(credentials.userName, credentials.password)}" update="growl"/>
+				</h:form>
+			</div>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

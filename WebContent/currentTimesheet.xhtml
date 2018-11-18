@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<head>
+<title>IGNORED</title>
+</head>
+
+<body>
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			#{msgs.current_timesheet_title}
+		</ui:define>
+		<ui:define name="pageTitle">
+			#{msgs.current_timesheet_title}
+		</ui:define>
+		<ui:define name="content">
+			<h:form id="timesheet_form">
+			<p:growl id="growl" showDetail="true" life="3000" />
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h:outputLabel value="#{msgs.current_week}">
+							<h:outputText
+								value="#{timesheetTracker.currentTimesheet.weekNumber}">
+							</h:outputText>
+						</h:outputLabel>
+						<div class="pull-right">
+							<h:outputLabel value="#{msgs.end_date}">
+								<h:outputText
+									value="#{timesheetTracker.currentTimesheet.endWeek}">
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</h:outputLabel>
+						</div>
+					</div>
+					<h:dataTable
+						value="#{timesheetTracker.currentTimesheet.details}"
+						var="detail" styleClass="table timesheet-table"
+						footerClass="table-footer">
+						<h:column>
+							<f:facet name="header">#{msgs.project_id}</f:facet>
+							<h:inputText value="#{detail.projectID}"
+								label="#{msgs.project_id}" class="form-control">
+
+							</h:inputText>
+						</h:column>
+						<h:column>
+							<f:facet name="header">#{msgs.work_package}</f:facet>
+							<h:inputText value="#{detail.workPackage}"
+								label="#{msgs.work_package}" class="form-control" />
+							<f:facet name="footer">
+								<h:outputText value="#{msgs.total}"
+									styleClass="vcenter text-right" />
+							</f:facet>
+						</h:column>
+						<h:column>
+							<f:facet name="header">#{msgs.total}</f:facet>
+							<h:outputText value="#{detail.sum}" class="vcenter text-center" />
+							<f:facet name="footer">
+								<h:outputText
+									value="#{timesheetTracker.currentTimesheet.getTotalHours()}"
+									styleClass="vcenter text-center" />
+							</f:facet>
+						</h:column>
+						<h:column>
+							<f:facet name="header">#{msgs.sat}</f:facet>
+							<h:inputText value="#{detail.hoursForWeek[0]}"
+								label="#{msgs.sat}" class="form-control">
+								<f:validateDoubleRange minimum="0.0" maximum="24.0" />
+							</h:inputText>
+							<f:facet name="footer">
+								<h:outputText
+									value="#{timesheetTracker.currentTimesheet.getDailyHours()[0]}"
+									styleClass="vcenter text-center" />
+							</f:facet>
+						</h:column>
+						<h:column>
+							<f:facet name="header">#{msgs.sun}</f:facet>
+							<h:inputText value="#{detail.hoursForWeek[1]}"
+								label="#{msgs.sun}" class="form-control">
+								<f:validateDoubleRange minimum="0.0" maximum="24.0" />
+							</h:inputText>
+							<f:facet name="footer">
+								<h:outputText
+									value="#{timesheetTracker.currentTimesheet.getDailyHours()[1]}"
+									styleClass="vcenter text-center" />
+							</f:facet>
+						</h:column>
+						<h:column>
+							<f:facet name="header">#{msgs.mon}</f:facet>
+							<h:inputText value="#{detail.hoursForWeek[2]}"
+								label="#{msgs.mon}" class="form-control">
+								<f:validateDoubleRange minimum="0.0" maximum="24.0" />
+							</h:inputText>
+							<f:facet name="footer">
+								<h:outputText
+									value="#{timesheetTracker.currentTimesheet.getDailyHours()[2]}"
+									styleClass="vcenter text-center" />
+							</f:facet>
+						</h:column>
+						<h:column>
+							<f:facet name="header">#{msgs.tue}</f:facet>
+							<h:inputText value="#{detail.hoursForWeek[3]}"
+								label="#{msgs.tue}" class="form-control">
+								<f:validateDoubleRange minimum="0.0" maximum="24.0" />
+							</h:inputText>
+							<f:facet name="footer">
+								<h:outputText
+									value="#{timesheetTracker.currentTimesheet.getDailyHours()[3]}"
+									styleClass="vcenter text-center" />
+							</f:facet>
+						</h:column>
+						<h:column>
+							<f:facet name="header">#{msgs.wed}</f:facet>
+							<h:inputText value="#{detail.hoursForWeek[4]}"
+								label="#{msgs.wed}" class="form-control">
+								<f:validateDoubleRange minimum="0.0" maximum="24.0" />
+							</h:inputText>
+							<f:facet name="footer">
+								<h:outputText
+									value="#{timesheetTracker.currentTimesheet.getDailyHours()[4]}"
+									styleClass="vcenter text-center" />
+							</f:facet>
+						</h:column>
+						<h:column>
+							<f:facet name="header">#{msgs.thu}</f:facet>
+							<h:inputText value="#{detail.hoursForWeek[5]}"
+								label="#{msgs.thu}" class="form-control">
+								<f:validateDoubleRange minimum="0.0" maximum="24.0" />
+							</h:inputText>
+							<f:facet name="footer">
+								<h:outputText
+									value="#{timesheetTracker.currentTimesheet.getDailyHours()[5]}"
+									styleClass="vcenter text-center" />
+							</f:facet>
+						</h:column>
+						<h:column>
+							<f:facet name="header">#{msgs.fri}</f:facet>
+							<h:inputText value="#{detail.hoursForWeek[6]}"
+								label="#{msgs.fri}" class="form-control">
+								<f:validateDoubleRange minimum="0.0" maximum="24.0" />
+							</h:inputText>
+							<f:facet name="footer">
+								<h:outputText
+									value="#{timesheetTracker.currentTimesheet.getDailyHours()[6]}"
+									styleClass="vcenter text-center" />
+							</f:facet>
+						</h:column>
+						<h:column>
+							<f:facet name="header">#{msgs.note}</f:facet>
+							<h:inputText value="#{detail.notes}" label="#{msgs.note}"
+								class="form-control note-field" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">#{msgs.delete}</f:facet>
+							<h:commandButton action="#{timesheetTracker.currentTimesheet.deleteRow(detail)}"
+								value="#{msgs.delete}" class="form-control">
+
+							</h:commandButton>
+						</h:column>
+					</h:dataTable>
+
+					<div class="panel-body">
+						<p:commandButton value="#{msgs.add_row}"
+							action="#{timesheetTracker.currentTimesheet.addRow()}"
+							styleClass="btn btn-default" />
+						<p:commandButton value="#{msgs.save_timesheet}"
+							action="#{timesheetTracker.addTimesheet(timesheetTracker.currentTimesheet, employeeTracker.currentEmployee)}"
+							styleClass="btn btn-primary pull-right" update="growl" />
+					</div>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

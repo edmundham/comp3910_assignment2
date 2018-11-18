@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+
+<h:body>
+
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			#{msgs.admin}
+		</ui:define>
+		<ui:define name="pageTitle">
+			#{msgs.admin}
+		</ui:define>
+		<ui:define name="content">
+			<div id="adminWrapper" class="center-block well">
+				<h:form>
+					<h4>#{msgs.admin}</h4>
+					<p:dataTable var="employee" value="#{employeeTracker.employees}">
+						<p:column headerText="#{msgs.name}">
+							<h:outputText value="#{employee.name}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.employee_number}">
+							<h:outputText value="#{employee.empNumber}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.username}">
+							<h:outputText value="#{employee.userName}" />
+						</p:column>
+
+						<p:column headerText="#{msgs.password}">
+							<p:commandLink value="#{msgs.editPassword}" ajax="false"
+								action="#{timesheetApplication.editPasswordButton(employee)}"
+								styleClass="btn btn-default" />
+						</p:column>
+						<p:column headerText="#{msgs.delete}">
+							<p:commandLink value="#{msgs.delete}" ajax="false"
+								action="#{employeeTracker.deleteEmployee(employee)}"
+								styleClass="btn btn-default" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+				<h:form>
+					<p:growl id="growl" showDetail="true" life="3000" />
+					<div class="panel-body">
+						<h4>#{msgs.new_user_header}</h4>
+						<p:panel>
+							<p:panelGrid columns="2" cellpadding="5">
+								<p:outputLabel for="addedName" value="#{msgs.admin_name}" />
+								<p:inputText value="#{employeeTracker.addedName}" id="addedName"
+									required="true" />
+
+								<p:outputLabel for="addedUsername"
+									value="#{msgs.admin_username}" />
+								<p:inputText value="#{employeeTracker.addedUserName}"
+									id="addedUsername" required="true" />
+
+								<p:outputLabel for="addedPassword"
+									value="#{msgs.admin_password}"></p:outputLabel>
+								<p:inputText value="#{employeeTracker.addedPassword}" id="addedPassword"
+									required="true" />
+							</p:panelGrid>
+						</p:panel>
+						<p:commandLink value="#{msgs.create_user}" ajax="false"
+							action="#{employeeTracker.addNewAction()}"
+							styleClass="btn btn-primary pull-left" update="growl" />
+
+					</div>
+				</h:form>
+			</div>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>
