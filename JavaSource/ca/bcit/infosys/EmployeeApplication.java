@@ -52,6 +52,7 @@ public class EmployeeApplication implements Serializable {
         list = editableEmployee;
     }
 
+    @Transactional
     public String deleteRow(EditableEmployee e) {
         employeeController.remove(e.getEmployee());
         list.remove(e);
