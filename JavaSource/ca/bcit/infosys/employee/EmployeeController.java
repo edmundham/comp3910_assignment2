@@ -34,8 +34,19 @@ public class EmployeeController implements Serializable {
         em.persist(employee);
     }
 
+    @SuppressWarnings("unchecked")
     public List<Employee> getAll() {
         Query query = em.createNativeQuery("select * from Employee order by employeeid", Employee.class);
         return query.getResultList();
+    }
+    
+    public Employee authenticate(String username, String pass) {
+        
+        for(Employee em : getAll()) {
+            if (em.getUserName().equals(username) && em.getPassword().equals(pass)) {
+                return em;
+            }
+        }
+        return null;
     }
 }

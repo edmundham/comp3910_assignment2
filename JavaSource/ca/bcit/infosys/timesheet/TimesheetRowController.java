@@ -34,6 +34,7 @@ public class TimesheetRowController implements Serializable {
         em.persist(timesheetRow);
     }
 
+    @SuppressWarnings("unchecked")
     public List<TimesheetRow> getAll() {
         Query query = em.createNativeQuery("select * from TimesheetRow order by TimesheetRowId", TimesheetRow.class);
         return query.getResultList();
