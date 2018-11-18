@@ -1,6 +1,7 @@
 package ca.bcit.infosys.timesheet;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -51,5 +52,29 @@ public class TimesheetController implements Serializable {
         query.setParameter(":employeeid", employee.getEmployeeId());
         return query.getResultList();
     }
+
+    public Timesheet getCurrentTimesheet(Employee employee, Date startWeek, Date endWeek) {
+        Query query = em.createNativeQuery("select * from Timesheet where employeeid=:employeeid"
+                + " and startWeek=:startweek limit 1", Timesheet.class);
+        query.setParameter("employeeid", employee.getEmployeeId());
+        query.setParameter("startweek", startWeek);
+        Timesheet timesheet = (Timesheet) query.getSingleResult();
+        if (timesheet == null) {
+            timesheet = new Timesheet();
+            timesheet.setEmployeeId(employee.getEmployeeId());
+            timesheet.setStartWeek(startWeek);
+            timesheet.setEndWeek(endWeek);
+        }
+        return (Timesheet) query.getSingleResult();
+    }
+
+    public List<Timesheet> getAllTimesheetsByEmployee(Employee employee) {
+        Query query = em.createNativeQuery(
+                "select * from Timesheet where employeeid=:employeeid order by startweek desc",
+                Timesheet.class);
+        query.setParameter("employeeid", employee.getEmployeeId());
+        return query.getResultList();
+    }
+
 
 }

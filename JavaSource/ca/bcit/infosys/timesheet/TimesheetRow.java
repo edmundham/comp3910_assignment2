@@ -17,38 +17,41 @@ public class TimesheetRow implements Serializable {
 
     @Id
     @Column(name="timesheetrowid")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long timesheetRowId;
 
     @Column(name="timesheetid")
     private Long timesheetId;
 
     @Column(name="projectid")
-    private Long projectId;
+    private Long projectId = 0L;
 
-    @Column(name="workpackageid")
-    private String workPackageId;
+    @Column(name="workpackage")
+    private String workPackageId = "";
 
     @Column(name="monday")
-    private Integer monday;
+    private Integer monday = 0;
 
     @Column(name="tuesday")
-    private Integer tuesday;
+    private Integer tuesday = 0;
 
     @Column(name="wednesday")
-    private Integer wednesday;
+    private Integer wednesday = 0;
 
     @Column(name="thursday")
-    private Integer thursday;
+    private Integer thursday = 0;
 
     @Column(name="friday")
-    private Integer friday;
+    private Integer friday = 0;
 
     @Column(name="saturday")
-    private Integer saturday;
+    private Integer saturday = 0;
 
     @Column(name="sunday")
-    private Integer sunday;
+    private Integer sunday = 0;
+
+    @Column(name="notes")
+    private String notes = "";
 
     public TimesheetRow() {
 
@@ -140,5 +143,13 @@ public class TimesheetRow implements Serializable {
 
     public void setSunday(Integer sunday) {
         this.sunday = sunday;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

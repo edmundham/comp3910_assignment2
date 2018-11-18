@@ -37,19 +37,19 @@
 						</div>
 					</div>
 					<h:dataTable
-						value="#{timesheetTracker.currentTimesheet.details}"
+						value="#{timesheetApplication.details}"
 						var="detail" styleClass="table timesheet-table"
 						footerClass="table-footer">
 						<h:column>
 							<f:facet name="header">#{msgs.project_id}</f:facet>
-							<h:inputText value="#{detail.projectID}"
+							<h:inputText value="#{detail.projectId}"
 								label="#{msgs.project_id}" class="form-control">
 
 							</h:inputText>
 						</h:column>
 						<h:column>
 							<f:facet name="header">#{msgs.work_package}</f:facet>
-							<h:inputText value="#{detail.workPackage}"
+							<h:inputText value="#{detail.workPackageId}"
 								label="#{msgs.work_package}" class="form-control" />
 							<f:facet name="footer">
 								<h:outputText value="#{msgs.total}"
@@ -58,94 +58,94 @@
 						</h:column>
 						<h:column>
 							<f:facet name="header">#{msgs.total}</f:facet>
-							<h:outputText value="#{detail.sum}" class="vcenter text-center" />
+							<h:outputText value="#{timesheetApplication.getSum(detail)}" class="vcenter text-center" />
 							<f:facet name="footer">
 								<h:outputText
-									value="#{timesheetTracker.currentTimesheet.getTotalHours()}"
+									value="#{timesheetApplication.totalHours}"
 									styleClass="vcenter text-center" />
 							</f:facet>
 						</h:column>
 						<h:column>
 							<f:facet name="header">#{msgs.sat}</f:facet>
-							<h:inputText value="#{detail.hoursForWeek[0]}"
+							<h:inputText value="#{detail.saturday}"
 								label="#{msgs.sat}" class="form-control">
 								<f:validateDoubleRange minimum="0.0" maximum="24.0" />
 							</h:inputText>
 							<f:facet name="footer">
 								<h:outputText
-									value="#{timesheetTracker.currentTimesheet.getDailyHours()[0]}"
+									value="#{timesheetApplication.saturdaySum}"
 									styleClass="vcenter text-center" />
 							</f:facet>
 						</h:column>
 						<h:column>
 							<f:facet name="header">#{msgs.sun}</f:facet>
-							<h:inputText value="#{detail.hoursForWeek[1]}"
+							<h:inputText value="#{detail.sunday}"
 								label="#{msgs.sun}" class="form-control">
 								<f:validateDoubleRange minimum="0.0" maximum="24.0" />
 							</h:inputText>
 							<f:facet name="footer">
 								<h:outputText
-									value="#{timesheetTracker.currentTimesheet.getDailyHours()[1]}"
+									value="#{timesheetApplication.sundaySum}"
 									styleClass="vcenter text-center" />
 							</f:facet>
 						</h:column>
 						<h:column>
 							<f:facet name="header">#{msgs.mon}</f:facet>
-							<h:inputText value="#{detail.hoursForWeek[2]}"
+							<h:inputText value="#{detail.monday}"
 								label="#{msgs.mon}" class="form-control">
 								<f:validateDoubleRange minimum="0.0" maximum="24.0" />
 							</h:inputText>
 							<f:facet name="footer">
 								<h:outputText
-									value="#{timesheetTracker.currentTimesheet.getDailyHours()[2]}"
+									value="#{timesheetApplication.mondaySum}"
 									styleClass="vcenter text-center" />
 							</f:facet>
 						</h:column>
 						<h:column>
 							<f:facet name="header">#{msgs.tue}</f:facet>
-							<h:inputText value="#{detail.hoursForWeek[3]}"
+							<h:inputText value="#{detail.tuesday}"
 								label="#{msgs.tue}" class="form-control">
 								<f:validateDoubleRange minimum="0.0" maximum="24.0" />
 							</h:inputText>
 							<f:facet name="footer">
 								<h:outputText
-									value="#{timesheetTracker.currentTimesheet.getDailyHours()[3]}"
+									value="#{timesheetApplication.tuesdaySum}"
 									styleClass="vcenter text-center" />
 							</f:facet>
 						</h:column>
 						<h:column>
 							<f:facet name="header">#{msgs.wed}</f:facet>
-							<h:inputText value="#{detail.hoursForWeek[4]}"
+							<h:inputText value="#{detail.wednesday}"
 								label="#{msgs.wed}" class="form-control">
 								<f:validateDoubleRange minimum="0.0" maximum="24.0" />
 							</h:inputText>
 							<f:facet name="footer">
 								<h:outputText
-									value="#{timesheetTracker.currentTimesheet.getDailyHours()[4]}"
+									value="#{timesheetApplication.wednesdaySum}"
 									styleClass="vcenter text-center" />
 							</f:facet>
 						</h:column>
 						<h:column>
 							<f:facet name="header">#{msgs.thu}</f:facet>
-							<h:inputText value="#{detail.hoursForWeek[5]}"
+							<h:inputText value="#{detail.thursday}"
 								label="#{msgs.thu}" class="form-control">
 								<f:validateDoubleRange minimum="0.0" maximum="24.0" />
 							</h:inputText>
 							<f:facet name="footer">
 								<h:outputText
-									value="#{timesheetTracker.currentTimesheet.getDailyHours()[5]}"
+									value="#{timesheetApplication.thursdaySum}"
 									styleClass="vcenter text-center" />
 							</f:facet>
 						</h:column>
 						<h:column>
 							<f:facet name="header">#{msgs.fri}</f:facet>
-							<h:inputText value="#{detail.hoursForWeek[6]}"
+							<h:inputText value="#{detail.friday}"
 								label="#{msgs.fri}" class="form-control">
 								<f:validateDoubleRange minimum="0.0" maximum="24.0" />
 							</h:inputText>
 							<f:facet name="footer">
 								<h:outputText
-									value="#{timesheetTracker.currentTimesheet.getDailyHours()[6]}"
+									value="#{timesheetApplication.fridaySum}"
 									styleClass="vcenter text-center" />
 							</f:facet>
 						</h:column>
@@ -156,7 +156,7 @@
 						</h:column>
 						<h:column>
 							<f:facet name="header">#{msgs.delete}</f:facet>
-							<h:commandButton action="#{timesheetTracker.currentTimesheet.deleteRow(detail)}"
+							<h:commandButton action="#{timesheetApplication.deleteRow(detail)}"
 								value="#{msgs.delete}" class="form-control">
 
 							</h:commandButton>
@@ -165,10 +165,10 @@
 
 					<div class="panel-body">
 						<p:commandButton value="#{msgs.add_row}"
-							action="#{timesheetTracker.currentTimesheet.addRow()}"
+							action="#{timesheetApplication.addRow()}"
 							styleClass="btn btn-default" />
 						<p:commandButton value="#{msgs.save_timesheet}"
-							action="#{timesheetTracker.addTimesheet(timesheetTracker.currentTimesheet, employeeTracker.currentEmployee)}"
+							action="#{timesheetApplication.saveTimesheet(employeeApplication.currentEmployee)}"
 							styleClass="btn btn-primary pull-right" update="growl" />
 					</div>
 				</div>

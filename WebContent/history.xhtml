@@ -21,40 +21,40 @@
 			
             <h3>#{msgs.history_title}</h3>
                 <p:accordionPanel dynamic="true" cache="true" multiple="true"
-                                  value="#{timesheetTracker.getTimesheets(employeeTracker.currentEmployee)}"
+                                  value="#{timesheetApplication.getHistoryTimesheets(employeeApplication.currentEmployee)}"
                                   var="employeeTimesheet">
-                    <p:tab title="#{timesheetApplication.formatDate(employeeTimesheet.startWeek)} - #{timesheetApplication.formatDate(employeeTimesheet.endWeek)}">
+                    <p:tab title="#{employeeTimesheet.startWeek} - #{employeeTimesheet.endWeek}">
                         <h:panelGrid columns="2" cellpadding="10">
-                            <p:dataTable var="detail" value="#{employeeTimesheet.details}">
+                            <p:dataTable var="detail" value="#{timesheetApplication.getHistoryTimesheetRows(employeeTimesheet)}">
                                 <p:column headerText="#{msgs.project_id}">
-                                    <h:outputText value="#{detail.projectID}"/>
+                                    <h:outputText value="#{detail.projectId}"/>
                                 </p:column>
                                 <p:column headerText="#{msgs.work_package}">
-                                    <h:outputText value="#{detail.workPackage}"/>
+                                    <h:outputText value="#{detail.workPackageId}"/>
                                 </p:column>
-                                <p:column headerText="#{msgs.total}" footerText="#{employeeTimesheet.getTotalHours()}">
-                                    <h:outputText value="#{detail.sum}"/>
+                                <p:column headerText="#{msgs.total}" footerText="#{timesheetApplication.getSumOfTimesheet(employeeTimesheet)}">
+                                    <h:outputText value="#{timesheetApplication.getSum(detail)}"/>
                                 </p:column>
-                                <p:column headerText="#{msgs.sat}" footerText="#{employeeTimesheet.getDailyHours()[0]}">
-                                    <h:outputText value="#{detail.hoursForWeek[0]}"/>
+                                <p:column headerText="#{msgs.sat}" footerText="#{timesheetApplication.getSaturdaySumByTimesheet(employeeTimesheet)}">
+                                    <h:outputText value="#{detail.saturday}"/>
                                 </p:column>
-                                <p:column headerText="#{msgs.sun}" footerText="#{employeeTimesheet.getDailyHours()[1]}">
-                                    <h:outputText value="#{detail.hoursForWeek[1]}"/>
+                                <p:column headerText="#{msgs.sun}" footerText="#{timesheetApplication.getSundaySumByTimesheet(employeeTimesheet)}">
+                                    <h:outputText value="#{detail.sunday}"/>
                                 </p:column>
-                                <p:column headerText="#{msgs.mon}" footerText="#{employeeTimesheet.getDailyHours()[2]}">
-                                    <h:outputText value="#{detail.hoursForWeek[2]}"/>
+                                <p:column headerText="#{msgs.mon}" footerText="#{timesheetApplication.getMondaySumByTimesheet(employeeTimesheet)}">
+                                    <h:outputText value="#{detail.monday}"/>
                                 </p:column>
-                                <p:column headerText="#{msgs.tue}" footerText="#{employeeTimesheet.getDailyHours()[3]}">
-                                    <h:outputText value="#{detail.hoursForWeek[3]}"/>
+                                <p:column headerText="#{msgs.tue}" footerText="#{timesheetApplication.getTuesdaySumByTimesheet(employeeTimesheet)}">
+                                    <h:outputText value="#{detail.tuesday}"/>
                                 </p:column>
-                                <p:column headerText="#{msgs.wed}" footerText="#{employeeTimesheet.getDailyHours()[4]}">
-                                    <h:outputText value="#{detail.hoursForWeek[4]}"/>
+                                <p:column headerText="#{msgs.wed}" footerText="#{timesheetApplication.getWednesdaySumByTimesheet(employeeTimesheet)}">
+                                    <h:outputText value="#{detail.wednesday}"/>
                                 </p:column>
-                                <p:column headerText="#{msgs.thu}" footerText="#{employeeTimesheet.getDailyHours()[5]}">
-                                    <h:outputText value="#{detail.hoursForWeek[5]}"/>
+                                <p:column headerText="#{msgs.thu}" footerText="#{timesheetApplication.getThursdaySumByTimesheet(employeeTimesheet)}">
+                                    <h:outputText value="#{detail.thursday}"/>
                                 </p:column>
-                                <p:column headerText="#{msgs.fri}" footerText="#{employeeTimesheet.getDailyHours()[6]}">
-                                    <h:outputText value="#{detail.hoursForWeek[6]}"/>
+                                <p:column headerText="#{msgs.fri}" footerText="#{timesheetApplication.getFridaySumByTimesheet(employeeTimesheet)}">
+                                    <h:outputText value="#{detail.friday}"/>
                                 </p:column>
                                 <p:column headerText="#{msgs.note}">
                                     <h:outputText value="#{detail.notes}"/>

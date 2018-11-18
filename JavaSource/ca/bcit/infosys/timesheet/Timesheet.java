@@ -18,7 +18,7 @@ public class Timesheet implements Serializable {
 
     @Id
     @Column(name="timesheetid")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long timesheetId;
 
     @Column(name="employeeid")
