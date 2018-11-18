@@ -41,11 +41,13 @@ public class TimesheetController implements Serializable {
         em.persist(timesheet);
     }
 
+    @SuppressWarnings("unchecked")
     public List<Timesheet> getAll() {
         Query query = em.createNativeQuery("select * from Timesheet order by TimesheetId", Timesheet.class);
         return query.getResultList();
     }
 
+    @SuppressWarnings("unchecked")
     public List<Timesheet> getTimesheetByEmployee(Employee employee) {
         Query query = em.createNativeQuery("select * from Timesheet where employeeid=:employeeid"
                 + "order by startweek asc", Timesheet.class);
@@ -68,6 +70,7 @@ public class TimesheetController implements Serializable {
         return (Timesheet) query.getSingleResult();
     }
 
+    @SuppressWarnings("unchecked")
     public List<Timesheet> getAllTimesheetsByEmployee(Employee employee) {
         Query query = em.createNativeQuery(
                 "select * from Timesheet where employeeid=:employeeid order by startweek desc",
