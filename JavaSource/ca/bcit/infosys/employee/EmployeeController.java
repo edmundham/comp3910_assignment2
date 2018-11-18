@@ -12,6 +12,7 @@ public class EmployeeController implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @PersistenceContext(unitName="assignment2") EntityManager em;
+    List<Employee> list;
 
     public Employee findEmployeeById(long id) {
         return em.find(Employee.class, id);
@@ -41,8 +42,8 @@ public class EmployeeController implements Serializable {
     }
     
     public Employee authenticate(String username, String pass) {
-        
-        for(Employee em : getAll()) {
+        list = getAll();
+        for(Employee em : list) {
             if (em.getUserName().equals(username) && em.getPassword().equals(pass)) {
                 return em;
             }

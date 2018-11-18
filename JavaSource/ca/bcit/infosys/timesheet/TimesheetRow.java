@@ -25,7 +25,7 @@ public class TimesheetRow implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="timesheetid")
-    private Long timesheetId;
+    private Timesheet timesheet;
 
     @Column(name="projectid")
     private Long projectId;
@@ -57,6 +57,9 @@ public class TimesheetRow implements Serializable {
     public TimesheetRow() {
 
     }
+    public TimesheetRow(Timesheet timesheet) {
+        this.timesheet = timesheet;
+    }
 
     public Long getTimesheetRowId() {
         return timesheetRowId;
@@ -66,12 +69,12 @@ public class TimesheetRow implements Serializable {
         this.timesheetRowId = timesheetRowId;
     }
 
-    public Long getTimesheetId() {
-        return timesheetId;
+    public Timesheet getTimesheetId() {
+        return timesheet;
     }
 
-    public void setTimesheetId(Long timesheetId) {
-        this.timesheetId = timesheetId;
+    public void setTimesheetId(Timesheet timesheet) {
+        this.timesheet = timesheet;
     }
 
     public Long getProjectId() {

@@ -22,18 +22,18 @@
 				<p:growl id="growl" showDetail="true" life="3000" />
 					<div class="form-group">
 						<label for="username">#{msgs.username}</label>
-						<p:inputText value="#{credentials.userName}" class="form-control"
+						<p:inputText value="#{employeeApplication.currentUser.userName}" class="form-control"
 							id="username" />
 					</div>
 					<div class="form-group">
 						<label for="password">#{msgs.password}</label>
-						<p:password value="#{credentials.password}"
+						<p:password value="#{employeeApplication.currentUser.password}"
 							class="form-control" id="password" />
 					</div>
 
 					<p:commandButton id="loginbutton" value="#{msgs.login}"
 						styleClass="btn btn-primary"
-						action="#{timesheetApplication.login(credentials.userName, credentials.password)}" update="growl"/>
+						action="#{employeeApplication.logIn()}" update="growl"/>
 				</h:form>
 			</div>
 		</ui:define>

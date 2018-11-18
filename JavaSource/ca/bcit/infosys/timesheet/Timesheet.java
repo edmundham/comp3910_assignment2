@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import ca.bcit.infosys.employee.Employee;
+
 @Entity
 @Table(name="Timesheet")
 public class Timesheet implements Serializable {
@@ -25,7 +27,7 @@ public class Timesheet implements Serializable {
 
     @OneToOne
     @JoinColumn(name="employeeid")
-    private Long employeeId;
+    private Employee employee;
 
     @Column(name="endweek")
     private Date endWeek;
@@ -36,6 +38,10 @@ public class Timesheet implements Serializable {
     public Timesheet() {
 
     }
+    
+    public Timesheet(Employee em) {
+        employee = em;
+    }
 
     public Long getTimesheetId() {
         return timesheetId;
@@ -45,12 +51,12 @@ public class Timesheet implements Serializable {
         this.timesheetId = timesheetId;
     }
 
-    public Long getEmployeeId() {
-        return employeeId;
+    public Employee getEmployeeId() {
+        return employee;
     }
 
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
+    public void setEmployeeId(Employee employee) {
+        this.employee = employee;
     }
 
     public Date getEndWeek() {

@@ -13,12 +13,12 @@
 	<ui:composition template="/templates/masterLayout.xhtml">
 		<ui:define name="windowTitle">
 			<h:outputFormat value="#{msgs.landing_title}">
-				<f:param value="#{employeeTracker.currentEmployee.name}" />
+				<f:param value="#{employeeApplication.currentUser.name}" />
 			</h:outputFormat>
 		</ui:define>
 		<ui:define name="pageTitle">
 			<h:outputFormat value="#{msgs.landing_title}">
-				<f:param value="#{employeeTracker.currentEmployee.name}" />
+				<f:param value="#{employeeApplication.currentUser.name}" />
 			</h:outputFormat>
 		</ui:define>
 		<ui:define name="content">
@@ -31,7 +31,7 @@
 					<p:commandLink value="#{msgs.nav_profile}" action="profile"
 						styleClass="list-group-item" />
 					<p:commandLink value="#{msgs.nav_admin}" action="admin"
-						rendered="#{employeeTracker.isAdmin(employeeTracker.currentEmployee.userName)}"
+						rendered="#{employeeApplication.currentUser.isAdmin}"
 						styleClass="list-group-item" />
 				</div>
 			</h:form>

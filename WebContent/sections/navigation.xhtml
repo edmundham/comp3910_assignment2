@@ -23,15 +23,15 @@
 					<li><h:commandLink value="#{msgs.nav_profile}"
 							action="profile" /></li>
 					<li><h:commandLink value="#{msgs.nav_admin}" action="admin"
-							rendered="#{employeeTracker.isAdmin(employeeTracker.currentEmployee.userName)}" /></li>
+							rendered="#{employeeApplication.currentUser.isAdmin}" /></li>
 					<li><h:commandLink value="#{msgs.nav_logout}"
-							action="#{employeeTracker.logout(employeeTracker.currentEmployee)}" /></li>
+							action="#{employeeApplication.logOut}" /></li>
 				</ul>
 
 				<div class="user-info text-right">
-					<strong>#{employeeTracker.currentEmployee.name}: </strong>
+					<strong>#{employeeApplication.currentUser.name}: </strong>
 					<h:outputText
-						value="( #{msgs.emp_num} #{employeeTracker.currentEmployee.empNumber} )"
+						value="( #{msgs.emp_num} #{employeeApplication.currentUser.employeeId} )"
 						class="text-muted" />
 				</div>
 

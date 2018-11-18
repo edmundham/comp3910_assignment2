@@ -23,27 +23,27 @@
 			<div id="adminWrapper" class="center-block well">
 				<h:form>
 					<h4>#{msgs.admin}</h4>
-					<p:dataTable var="employee" value="#{employeeTracker.employees}">
+					<p:dataTable var="e" value="#{employeeApplication.list}">
 						<p:column headerText="#{msgs.name}">
-							<h:outputText value="#{employee.name}" />
+							<h:outputText value="#{e.employee.name}" />
 						</p:column>
 
 						<p:column headerText="#{msgs.employee_number}">
-							<h:outputText value="#{employee.empNumber}" />
+							<h:outputText value="#{e.employee.employeeId}" />
 						</p:column>
 
 						<p:column headerText="#{msgs.username}">
-							<h:outputText value="#{employee.userName}" />
+							<h:outputText value="#{e.employee.userName}" />
 						</p:column>
 
 						<p:column headerText="#{msgs.password}">
 							<p:commandLink value="#{msgs.editPassword}" ajax="false"
-								action="#{timesheetApplication.editPasswordButton(employee)}"
+								action="#{employeeApplication.setToBeEdited(e.employee)}"
 								styleClass="btn btn-default" />
 						</p:column>
 						<p:column headerText="#{msgs.delete}">
 							<p:commandLink value="#{msgs.delete}" ajax="false"
-								action="#{employeeTracker.deleteEmployee(employee)}"
+								action="#{employeeApplication.deleteRow(e)}"
 								styleClass="btn btn-default" />
 						</p:column>
 					</p:dataTable>
@@ -55,22 +55,22 @@
 						<p:panel>
 							<p:panelGrid columns="2" cellpadding="5">
 								<p:outputLabel for="addedName" value="#{msgs.admin_name}" />
-								<p:inputText value="#{employeeTracker.addedName}" id="addedName"
+								<p:inputText value="#{employeeApplication.toBeAddedEmployee.name}" id="addedName"
 									required="true" />
 
 								<p:outputLabel for="addedUsername"
 									value="#{msgs.admin_username}" />
-								<p:inputText value="#{employeeTracker.addedUserName}"
+								<p:inputText value="#{employeeApplication.toBeAddedEmployee.userName}"
 									id="addedUsername" required="true" />
 
 								<p:outputLabel for="addedPassword"
 									value="#{msgs.admin_password}"></p:outputLabel>
-								<p:inputText value="#{employeeTracker.addedPassword}" id="addedPassword"
+								<p:inputText value="#{employeeApplication.toBeAddedEmployee.password}" id="addedPassword"
 									required="true" />
 							</p:panelGrid>
 						</p:panel>
 						<p:commandLink value="#{msgs.create_user}" ajax="false"
-							action="#{employeeTracker.addNewAction()}"
+							action="#{employeeApplication.add()}"
 							styleClass="btn btn-primary pull-left" update="growl" />
 
 					</div>
