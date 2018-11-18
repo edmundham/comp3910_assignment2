@@ -83,8 +83,12 @@ public class EmployeeApplication implements Serializable {
     }
     
     public String logIn() {
+        FacesContext context = FacesContext.getCurrentInstance();
         currentUser = employeeController.authenticate(currentUser.getUserName(), currentUser.getPassword());
         if (currentUser == null) {
+            context.addMessage(null, new FacesMessage("Fail",
+                    "Incorrect password"));
+            currentUser = new Employee();
             return null;
         } else {
             return "landing";
@@ -92,7 +96,7 @@ public class EmployeeApplication implements Serializable {
     }
     
     public String logOut() {
-        currentUser = null;
+        currentUser = new Employee();
         return "index";
     }
     
