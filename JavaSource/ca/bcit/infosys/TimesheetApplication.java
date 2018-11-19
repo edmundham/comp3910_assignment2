@@ -5,9 +5,14 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -20,7 +25,7 @@ import ca.bcit.infosys.timesheet.TimesheetRowController;
 
 /**
  * Helper class for all pages containing a timesheet object.
- * 
+ *
  * @author Cameron
  * @version 1.0
  */
@@ -31,8 +36,10 @@ public class TimesheetApplication implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final int DAYS_LEFT_VARIABLE = 6;
-    
+
     private static final int MIN_ROWS = 5;
+
+    private static final int DAY_HOURS = 24;
 
     @Inject
     private TimesheetController timesheetController;
@@ -60,7 +67,7 @@ public class TimesheetApplication implements Serializable {
 
     /**
      * Initializes the history list which contains Timesheet objects.
-     * 
+     *
      * @param employee
      *            whose history you are grabbing
      * @return list containing all historical timesheets for an employee
@@ -74,7 +81,7 @@ public class TimesheetApplication implements Serializable {
 
     /**
      * Sets the history timesheet list.
-     * 
+     *
      * @param history
      *            new timesheet list
      */
@@ -84,7 +91,7 @@ public class TimesheetApplication implements Serializable {
 
     /**
      * Gets the start of the current week.
-     * 
+     *
      * @return start of the current week
      */
     public Date getStartWeek() {
@@ -98,7 +105,7 @@ public class TimesheetApplication implements Serializable {
 
     /**
      * Sets the week start date.
-     * 
+     *
      * @param startWeek
      *            new date
      */
@@ -108,7 +115,7 @@ public class TimesheetApplication implements Serializable {
 
     /**
      * Gets the last day in the current week.
-     * 
+     *
      * @return last day of current week.
      */
     public Date getEndWeek() {
@@ -122,7 +129,7 @@ public class TimesheetApplication implements Serializable {
 
     /**
      * Sets the end date of the week.
-     * 
+     *
      * @param endWeek
      *            new week end date
      */
@@ -170,7 +177,7 @@ public class TimesheetApplication implements Serializable {
     }
 
     /**
-     * Initializes details list which contains timesheet rows. If a timesheet 
+     * Initializes details list which contains timesheet rows. If a timesheet
      * already exists it will return that list of timesheet rows.
      * @return list of timesheet rows.
      */
@@ -233,9 +240,9 @@ public class TimesheetApplication implements Serializable {
                 .getRowsByTimesheet(timesheet);
         int sum = 0;
         for (TimesheetRow detail : timesheetRows) {
-            sum += detail.getMonday() + detail.getTuesday() 
+            sum += detail.getMonday() + detail.getTuesday()
             + detail.getWednesday() + detail.getThursday()
-                    + detail.getFriday() + detail.getSaturday() 
+                    + detail.getFriday() + detail.getSaturday()
                     + detail.getSunday();
         }
         return sum;
@@ -247,9 +254,9 @@ public class TimesheetApplication implements Serializable {
      * @return sum of entire row
      */
     public int getSum(TimesheetRow detail) {
-        return detail.getMonday() + detail.getTuesday() 
+        return detail.getMonday() + detail.getTuesday()
         + detail.getWednesday() + detail.getThursday()
-                + detail.getFriday() + detail.getSaturday() 
+                + detail.getFriday() + detail.getSaturday()
                 + detail.getSunday();
     }
 
@@ -260,9 +267,9 @@ public class TimesheetApplication implements Serializable {
     public int getTotalHours() {
         int sum = 0;
         for (TimesheetRow detail : details) {
-            sum += detail.getMonday() + detail.getTuesday() 
+            sum += detail.getMonday() + detail.getTuesday()
             + detail.getWednesday() + detail.getThursday()
-                    + detail.getFriday() + detail.getSaturday() 
+                    + detail.getFriday() + detail.getSaturday()
                     + detail.getSunday();
         }
         return sum;
@@ -358,7 +365,7 @@ public class TimesheetApplication implements Serializable {
      * @return sum of that day
      */
     public int getMondaySumByTimesheet(Timesheet timesheet) {
-        List<TimesheetRow> timesheetRows = 
+        List<TimesheetRow> timesheetRows =
                 timesheetRowController.getRowsByTimesheet(timesheet);
         int sum = 0;
         for (TimesheetRow detail : timesheetRows) {
@@ -373,7 +380,7 @@ public class TimesheetApplication implements Serializable {
      * @return sum of that day
      */
     public int getTuesdaySumByTimesheet(Timesheet timesheet) {
-        List<TimesheetRow> timesheetRows = 
+        List<TimesheetRow> timesheetRows =
                 timesheetRowController.getRowsByTimesheet(timesheet);
         int sum = 0;
         for (TimesheetRow detail : timesheetRows) {
@@ -388,7 +395,7 @@ public class TimesheetApplication implements Serializable {
      * @return sum of that day
      */
     public int getWednesdaySumByTimesheet(Timesheet timesheet) {
-        List<TimesheetRow> timesheetRows = 
+        List<TimesheetRow> timesheetRows =
                 timesheetRowController.getRowsByTimesheet(timesheet);
         int sum = 0;
         for (TimesheetRow detail : timesheetRows) {
@@ -403,7 +410,7 @@ public class TimesheetApplication implements Serializable {
      * @return sum of that day
      */
     public int getThursdaySumByTimesheet(Timesheet timesheet) {
-        List<TimesheetRow> timesheetRows = 
+        List<TimesheetRow> timesheetRows =
                 timesheetRowController.getRowsByTimesheet(timesheet);
         int sum = 0;
         for (TimesheetRow detail : timesheetRows) {
@@ -418,7 +425,7 @@ public class TimesheetApplication implements Serializable {
      * @return sum of that day
      */
     public int getFridaySumByTimesheet(Timesheet timesheet) {
-        List<TimesheetRow> timesheetRows = 
+        List<TimesheetRow> timesheetRows =
                 timesheetRowController.getRowsByTimesheet(timesheet);
         int sum = 0;
         for (TimesheetRow detail : timesheetRows) {
@@ -433,7 +440,7 @@ public class TimesheetApplication implements Serializable {
      * @return sum of that day
      */
     public int getSaturdaySumByTimesheet(Timesheet timesheet) {
-        List<TimesheetRow> timesheetRows = 
+        List<TimesheetRow> timesheetRows =
                 timesheetRowController.getRowsByTimesheet(timesheet);
         int sum = 0;
         for (TimesheetRow detail : timesheetRows) {
@@ -448,7 +455,7 @@ public class TimesheetApplication implements Serializable {
      * @return sum of that day
      */
     public int getSundaySumByTimesheet(Timesheet timesheet) {
-        List<TimesheetRow> timesheetRows = 
+        List<TimesheetRow> timesheetRows =
                 timesheetRowController.getRowsByTimesheet(timesheet);
         int sum = 0;
         for (TimesheetRow detail : timesheetRows) {
@@ -485,6 +492,25 @@ public class TimesheetApplication implements Serializable {
      * @return string for redirection
      */
     public String saveTimesheet(Employee employee) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ResourceBundle bundle = ResourceBundle
+                .getBundle("ca.bcit.infosys.messages",
+                context.getViewRoot().getLocale());
+
+        if (!validateTimesheetRows()) {
+            context.addMessage(
+                    null, new FacesMessage(bundle.getString("failed"),
+                            bundle.getString("error_message_id_wp")));
+            return null;
+        }
+
+        if (!validateTimesheetRowsHours()) {
+            context.addMessage(
+                    null, new FacesMessage(bundle.getString("failed"),
+                            bundle.getString("error_message_day_hour")));
+            return null;
+        }
+
         currentTimesheet = timesheetController
                 .getCurrentTimesheet(employee, startWeek, endWeek);
         if (currentTimesheet.getTimesheetId() == null) {
@@ -504,7 +530,52 @@ public class TimesheetApplication implements Serializable {
             timesheetRowController.merge(detail);
         }
         details = timesheetRowController.getRowsByTimesheet(currentTimesheet);
+
+        context.addMessage(
+                null, new FacesMessage(bundle.getString("successful"),
+                bundle.getString("saved_message_id_wp")));
         return null;
+    }
+
+    /**
+     * validates timesheet row with work package
+     * id and project id.
+     * @return true if valid, false otherwise
+     */
+    private boolean validateTimesheetRows() {
+        Map<String, Boolean> tempMap = new HashMap<>();
+        for (TimesheetRow detail : details) {
+            if (tempMap.get(detail.getWorkPackageId()
+                    + detail.getProjectId()) != null) {
+                return false;
+            }
+            if ((detail.getWorkPackageId() + detail.getProjectId())
+                    .equals("0")) {
+                continue;
+            }
+            tempMap.put(detail.getWorkPackageId()
+                    + detail.getProjectId(), true);
+        }
+        return true;
+    }
+
+    /**
+     * validate timesheet row hours.
+     * @return true if valid, false otherwise
+     */
+    private boolean validateTimesheetRowsHours() {
+        for (TimesheetRow detail : details) {
+            if (detail.getMonday() > DAY_HOURS
+                    || detail.getTuesday() > DAY_HOURS
+                    || detail.getWednesday() > DAY_HOURS
+                    || detail.getThursday() > DAY_HOURS
+                    || detail.getFriday() > DAY_HOURS
+                    || detail.getSaturday() > DAY_HOURS
+                    || detail.getSunday() > DAY_HOURS) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
