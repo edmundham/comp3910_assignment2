@@ -52,6 +52,9 @@ public class TimesheetApplication implements Serializable {
     private Date startWeek = getStartWeek();
     private Date endWeek = getEndWeek();
 
+    private boolean toBeDeleted;
+    private boolean toBeAdded;
+
     private List<TimesheetRow> details = new ArrayList<>();
 
     private Timesheet currentTimesheet;
@@ -182,15 +185,17 @@ public class TimesheetApplication implements Serializable {
      * @return list of timesheet rows.
      */
     public List<TimesheetRow> getDetails() {
-        Timesheet tempTimesheet = timesheetController.getCurrentTimesheet(
-                currentEmployee, startWeek, endWeek);
-        if (tempTimesheet.getTimesheetId() != null) {
-            details = timesheetRowController.getRowsByCurrentTimesheetId(
-                    tempTimesheet.getTimesheetId());
-        }
-        if (details.size() == 0) {
-            for (int i = 0; i < MIN_ROWS; i++) {
-                details.add(new TimesheetRow());
+        if (!toBeAdded && !toBeDeleted) {
+            Timesheet tempTimesheet = timesheetController.getCurrentTimesheet(
+                    currentEmployee, startWeek, endWeek);
+            if (tempTimesheet.getTimesheetId() != null) {
+                details = timesheetRowController.getRowsByCurrentTimesheetId(
+                        tempTimesheet.getTimesheetId());
+            }
+            if (details.size() == 0) {
+                for (int i = 0; i < MIN_ROWS; i++) {
+                    details.add(new TimesheetRow());
+                }
             }
         }
         return details;
@@ -471,9 +476,10 @@ public class TimesheetApplication implements Serializable {
      */
     public String deleteRow(TimesheetRow detail) {
         if (details.size() == MIN_ROWS) {
-            details.add(new TimesheetRow());
+            return null;
         }
         details.remove(detail);
+        toBeDeleted = true;
         return null;
     }
 
@@ -483,6 +489,7 @@ public class TimesheetApplication implements Serializable {
      */
     public String addRow() {
         details.add(new TimesheetRow());
+        toBeAdded = true;
         return null;
     }
 
