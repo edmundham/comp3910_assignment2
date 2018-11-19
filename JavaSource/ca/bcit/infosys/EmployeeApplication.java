@@ -165,7 +165,14 @@ public class EmployeeApplication implements Serializable {
      * @return string for redirection
      */
     public String login(String userName, String password) {
+        FacesContext context = FacesContext.getCurrentInstance();
+
         currentEmployee = employeeController.login(userName, password);
+        if (currentEmployee == null) {
+            context.addMessage(null, new FacesMessage("Fail",
+                    "Incorrect username/password combo"));
+            return null;
+        }
         System.out.println(currentEmployee.isAdmin());
         return currentEmployee.isAdmin() ? "admin" : "success";
     }
