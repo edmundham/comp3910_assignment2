@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -133,8 +135,17 @@ public class EmployeeApplication implements Serializable {
      * @return string for redirection
      */
     public String addNewUser(String name, String username, String password) {
+        FacesContext context = FacesContext.getCurrentInstance();
         if (!currentEmployee.isAdmin()) {
             return null;
+        }
+        List<Employee> tmp = employeeController.getAll();
+        for (Employee e : tmp) {
+            if (e.getUserName().equals(username)) {
+                context.addMessage(null, new FacesMessage("Fail",
+                        "Username already in use."));
+                return null;
+            }
         }
         Employee addedEmployee = new Employee();
         addedEmployee.setName(name);
@@ -154,7 +165,14 @@ public class EmployeeApplication implements Serializable {
      * @return string for redirection
      */
     public String login(String userName, String password) {
+        FacesContext context = FacesContext.getCurrentInstance();
+
         currentEmployee = employeeController.login(userName, password);
+        if (currentEmployee == null) {
+            context.addMessage(null, new FacesMessage("Fail",
+                    "Incorrect username/password combo"));
+            return null;
+        }
         System.out.println(currentEmployee.isAdmin());
         return currentEmployee.isAdmin() ? "admin" : "success";
     }
@@ -211,13 +229,23 @@ public class EmployeeApplication implements Serializable {
      * @return string for redirection
      */
     public String updateEmployee(String oldPassword, String password) {
-        if (!currentEmployee.getPassword().equals(oldPassword)) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (currentEmployee.getPassword().compareTo(oldPassword) != 0) {
+            context.addMessage(null, new FacesMessage("Fail",
+                    "Incorrect old password"));
             return null;
+        }  else if (oldPassword.compareTo(password) == 0) {
+            context.addMessage(null, new FacesMessage("Fail",
+                    "Password must be different"));
+            return null;
+        } else {
+            context.addMessage(null, new FacesMessage("Successful",
+                    "Your password has been changed"));
+            employeeToBeChanged = currentEmployee;
+            employeeToBeChanged.setPassword(password);
+            employeeController.merge(employeeToBeChanged);
+            return "landing";
         }
-        employeeToBeChanged = currentEmployee;
-        employeeToBeChanged.setPassword(password);
-        employeeController.merge(employeeToBeChanged);
-        return "landing";
     }
 
 }
