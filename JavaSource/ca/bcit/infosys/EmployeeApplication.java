@@ -14,6 +14,12 @@ import ca.bcit.infosys.employee.EditableEmployee;
 import ca.bcit.infosys.employee.Employee;
 import ca.bcit.infosys.employee.EmployeeController;
 
+/**
+ * Helper class for all pages containing an Employee object.
+ * 
+ * @author Cameron
+ * @version 1.0
+ */
 @Named
 @SessionScoped
 public class EmployeeApplication implements Serializable {
@@ -24,8 +30,14 @@ public class EmployeeApplication implements Serializable {
 
     private Employee currentEmployee;
     private List<EditableEmployee> list;
-    private Employee employeeToBeChanged = null;
+    private Employee employeeToBeChanged;
 
+    /**
+     * If the user is an admin it will initialize the list which
+     * contains all employees.
+     * @return list of editable employees
+     * @throws Exception is user is not an admin
+     */
     public List<EditableEmployee> getList() throws Exception {
         if (currentEmployee.isAdmin()) {
             list = refreshList();
@@ -35,6 +47,10 @@ public class EmployeeApplication implements Serializable {
         return list;
     }
 
+    /**
+     * Updates the editable employee list from the database.
+     * @return list of all employees
+     */
     private List<EditableEmployee> refreshList() {
         List<Employee> employees = employeeController.getAll();
         List<EditableEmployee> tempList = new ArrayList<>();
@@ -44,32 +60,61 @@ public class EmployeeApplication implements Serializable {
         return tempList;
     }
 
+    /**
+     * Sets list of editable employees.
+     * @param editableEmployee new editable employee list
+     */
     public void setList(List<EditableEmployee> editableEmployee) {
         list = editableEmployee;
     }
 
+    /**
+     * Getter for currentEmployee.
+     * @return currentEmployee
+     */
     public Employee getCurrentEmployee() {
         return currentEmployee;
     }
 
+    /**
+     * Setter for current employee.
+     * @param currentEmployee new current employee
+     */
     public void setCurrentEmployee(Employee currentEmployee) {
         this.currentEmployee = currentEmployee;
     }
 
+    /**
+     * Getter for employeeToBeChanged.
+     * @return employeeToBeChanged
+     */
     public Employee getEmployeeToBeChanged() {
         return employeeToBeChanged;
     }
 
+    /**
+     * Setter for employeeToBeChanged.
+     * @param employeeToBeChanged new employeeToBeChanged
+     */
     public void setEmployeeToBeChanged(Employee employeeToBeChanged) {
         this.employeeToBeChanged = employeeToBeChanged;
     }
 
+    /**
+     * Deletes an employee from the list.
+     * @param e employee to be deleted
+     * @return string for redirection
+     */
     public String deleteRow(EditableEmployee e) {
         employeeController.remove(e.getEmployee());
         list.remove(e);
         return "";
     }
 
+    /**
+     * If the employee is editable saves it to the database.
+     * @return string for redirection
+     */
     public String save() {
         for (EditableEmployee e : list) {
             if (e.isEditable()) {
@@ -80,6 +125,13 @@ public class EmployeeApplication implements Serializable {
         return "";
     }
 
+    /**
+     * Adds a new user to the list and database.
+     * @param name String for name
+     * @param username String for username
+     * @param password String for password
+     * @return string for redirection
+     */
     public String addNewUser(String name, String username, String password) {
         if (!currentEmployee.isAdmin()) {
             return null;
@@ -88,23 +140,39 @@ public class EmployeeApplication implements Serializable {
         addedEmployee.setName(name);
         addedEmployee.setUserName(username);
         addedEmployee.setPassword(password);
-        addedEmployee.setCreatedDate(new Date(Calendar.getInstance().getTime().getTime()));
+        addedEmployee.setCreatedDate(new Date(Calendar.getInstance()
+                .getTime().getTime()));
         employeeController.add(addedEmployee);
         list.add(new EditableEmployee(addedEmployee));
         return "";
     }
 
+    /**
+     * Validation for user login.
+     * @param userName String for username
+     * @param password String for password
+     * @return string for redirection
+     */
     public String login(String userName, String password) {
         currentEmployee = employeeController.login(userName, password);
         System.out.println(currentEmployee.isAdmin());
         return currentEmployee.isAdmin() ? "admin" : "success";
     }
 
+    /**
+     * Logs the user out and returns them to login screen.
+     * @return string for redirection
+     */
     public String logout() {
         currentEmployee = null;
         return "logoutSuccess";
     }
 
+    /**
+     * Redirects the admin to the edit password screen.
+     * @param employee to be changed
+     * @return string for redirection
+     */
     public String editPasswordButton(Employee employee) {
         if (!currentEmployee.isAdmin()) {
             return null;
@@ -113,11 +181,20 @@ public class EmployeeApplication implements Serializable {
         return "edit";
     }
 
+    /**
+     * Edits the users password.
+     * @return string for redirection
+     */
     public String editOneUserPassword() {
         employeeController.merge(employeeToBeChanged);
         return "adminSuccess";
     }
 
+    /**
+     * Deletes employee from the list and database.
+     * @param employee employee to be deleted
+     * @return string for redirection
+     */
     public String deleteEmployee(EditableEmployee employee) {
         if (!currentEmployee.isAdmin()) {
             return null;
@@ -127,6 +204,12 @@ public class EmployeeApplication implements Serializable {
         return null;
     }
 
+    /**
+     * Method for user to update their own password.
+     * @param oldPassword string for old password
+     * @param password string for new password
+     * @return string for redirection
+     */
     public String updateEmployee(String oldPassword, String password) {
         if (!currentEmployee.getPassword().equals(oldPassword)) {
             return null;
