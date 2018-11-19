@@ -18,7 +18,7 @@ CREATE TABLE Employee(
     isadmin boolean
 );
 INSERT INTO Employee (name, username, password, createddate, isadmin) 
-    VALUES('Test Test', 'Test123Test123', 'Test123Test123', now(), 1);
+    VALUES('Test Admin', 'admin', 'admin', now(), 1);
 INSERT INTO Employee (name, username, password, createddate, isadmin) 
     VALUES('Cameron Lay', 'Cam.Lay123', 'Cam.Lay123', now(), 0);
 INSERT INTO Employee (name, username, password, createddate, isadmin) 
@@ -28,7 +28,7 @@ INSERT INTO Employee (name, username, password, createddate, isadmin)
 INSERT INTO Employee (name, username, password, createddate, isadmin) 
     VALUES('Tony Pacheco', 'Tony.Pacheco123', 'Tony.Pacheco123', now(), 0);
 INSERT INTO Employee (name, username, password, createddate, isadmin) 
-    VALUES('Bruce Link', 'Bruce.Link123', 'Bruce.Link123', now(), 0);
+    VALUES('Bruce Link', 'brucelink', 'brucelink', now(), 0);
 INSERT INTO Employee (name, username, password, createddate, isadmin) 
     VALUES('Trevor Lord', 'Trevor.Lord123', 'Trevor.Lord123', now(), 0);
 
