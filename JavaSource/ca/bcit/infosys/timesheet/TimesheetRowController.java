@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.enterprise.context.Dependent;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -54,7 +55,14 @@ public class TimesheetRowController implements Serializable {
                 "select * from TimesheetRow where timesheetid=:timesheetid order by timesheetrowid asc",
                 TimesheetRow.class);
         query.setParameter("timesheetid", timesheet.getTimesheetId());
-        return query.getResultList();
+        List<TimesheetRow> list = null;
+        try {
+            list = query.getResultList();
+        } catch(NoResultException e) {
+            
+        }
+        
+        return list;
     }
 
 }

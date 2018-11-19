@@ -23,10 +23,16 @@ public class TimesheetApplication implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Inject private TimesheetController timesheetController;
-    @Inject private TimesheetRowController timesheetRowController;
+    @Inject
+    private TimesheetController timesheetController;
+    @Inject
+    private TimesheetRowController timesheetRowController;
+    @Inject
+    private EmployeeApplication emApp;
+    private Employee employee = emApp.getCurrentEmployee();
 
     private List<TimesheetRow> details = new ArrayList<>();
+    private List<TimesheetRow> currentSheet = new ArrayList<>();
 
     private Timesheet currentTimesheet;
     private Date startWeek = getStartWeek();
@@ -36,9 +42,18 @@ public class TimesheetApplication implements Serializable {
     private List<Timesheet> history;
 
     public TimesheetApplication() {
-        for (int i = 0; i < 5; i++) {
-            details.add(new TimesheetRow());
+//         currentTimesheet =
+//         timesheetController.getCurrentTimesheet(employee,
+//         startWeek, endWeek);
+        if (currentTimesheet != null && timesheetRowController.getRowsByTimesheet(currentTimesheet) != null) {
+
+            details = timesheetRowController.getRowsByTimesheet(currentTimesheet);
+        } else {
+            for (int i = 0; i < 5; i++) {
+                details.add(new TimesheetRow());
+            }
         }
+
     }
 
     public List<Timesheet> getHistory(Employee employee) throws Exception {
@@ -48,6 +63,21 @@ public class TimesheetApplication implements Serializable {
 
     public void setHistory(List<Timesheet> history) {
         this.history = history;
+    }
+
+    /**
+     * @return the currentSheet
+     */
+    public List<TimesheetRow> getCurrentSheet() {
+        return currentSheet;
+    }
+
+    /**
+     * @param currentSheet
+     *            the currentSheet to set
+     */
+    public void setCurrentSheet(List<TimesheetRow> currentSheet) {
+        this.currentSheet = currentSheet;
     }
 
     public Date getStartWeek() {
@@ -77,7 +107,7 @@ public class TimesheetApplication implements Serializable {
     }
 
     public int getWeekNumber() {
-        Calendar c= new GregorianCalendar();
+        Calendar c = new GregorianCalendar();
         int currentDay = c.get(Calendar.DAY_OF_WEEK);
         int leftDays = Calendar.FRIDAY - currentDay;
         c.add(Calendar.DATE, leftDays);
@@ -115,25 +145,22 @@ public class TimesheetApplication implements Serializable {
         List<TimesheetRow> timesheetRows = timesheetRowController.getRowsByTimesheet(timesheet);
         int sum = 0;
         for (TimesheetRow detail : timesheetRows) {
-            sum += detail.getMonday() + detail.getTuesday() + detail.getWednesday() +
-                    detail.getThursday() + detail.getFriday() + detail.getSaturday() +
-                    detail.getSunday();
+            sum += detail.getMonday() + detail.getTuesday() + detail.getWednesday() + detail.getThursday()
+                    + detail.getFriday() + detail.getSaturday() + detail.getSunday();
         }
         return sum;
     }
 
     public int getSum(TimesheetRow detail) {
-        return detail.getMonday() + detail.getTuesday() + detail.getWednesday() +
-                detail.getThursday() + detail.getFriday() + detail.getSaturday() +
-                detail.getSunday();
+        return detail.getMonday() + detail.getTuesday() + detail.getWednesday() + detail.getThursday()
+                + detail.getFriday() + detail.getSaturday() + detail.getSunday();
     }
 
     public int getTotalHours() {
         int sum = 0;
         for (TimesheetRow detail : details) {
-            sum += detail.getMonday() + detail.getTuesday() + detail.getWednesday() +
-                    detail.getThursday() + detail.getFriday() + detail.getSaturday() +
-                    detail.getSunday();
+            sum += detail.getMonday() + detail.getTuesday() + detail.getWednesday() + detail.getThursday()
+                    + detail.getFriday() + detail.getSaturday() + detail.getSunday();
         }
         return sum;
     }
@@ -261,25 +288,32 @@ public class TimesheetApplication implements Serializable {
         if (details.size() == 5) {
             details.add(new TimesheetRow());
         }
-        details.remove(detail);
+        timesheetRowController.remove(detail);
+        details = timesheetRowController.getRowsByTimesheet(currentTimesheet);
         return null;
     }
 
     public String addRow() {
-        details.add(new TimesheetRow());
+        timesheetRowController.add(new TimesheetRow());
+        details = timesheetRowController.getRowsByTimesheet(currentTimesheet);
         return null;
     }
 
     public String saveTimesheet(Employee employee) {
-        currentTimesheet.setEmployeeId(employee.getEmployeeId());
-        currentTimesheet.setEndWeek(endWeek);
-        currentTimesheet.setStartWeek(startWeek);
-        timesheetController.add(currentTimesheet);
+        // currentTimesheet.setEmployeeId(employee.getEmployeeId());
+        // currentTimesheet.setEndWeek(endWeek);
+        // currentTimesheet.setStartWeek(startWeek);
         currentTimesheet = timesheetController.getCurrentTimesheet(employee, startWeek, endWeek);
+        if (timesheetController.findTimesheetById(currentTimesheet.getTimesheetId()) != null) {
+            timesheetController.merge(currentTimesheet);
+        } else {
+            timesheetController.add(currentTimesheet);
+        }
         for (TimesheetRow detail : details) {
             detail.setTimesheetId(currentTimesheet.getTimesheetId());
             timesheetRowController.merge(detail);
         }
+        details = timesheetRowController.getRowsByTimesheet(currentTimesheet);
         return null;
     }
 

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.enterprise.context.Dependent;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -60,14 +61,19 @@ public class TimesheetController implements Serializable {
                 + " and startWeek=:startweek limit 1", Timesheet.class);
         query.setParameter("employeeid", employee.getEmployeeId());
         query.setParameter("startweek", startWeek);
-        Timesheet timesheet = (Timesheet) query.getSingleResult();
+        Timesheet timesheet = null;
+        try{
+            timesheet = (Timesheet) query.getSingleResult();
+        } catch(NoResultException e) {
+            
+        }
         if (timesheet == null) {
             timesheet = new Timesheet();
             timesheet.setEmployeeId(employee.getEmployeeId());
             timesheet.setStartWeek(startWeek);
             timesheet.setEndWeek(endWeek);
         }
-        return (Timesheet) query.getSingleResult();
+        return timesheet;
     }
 
     @SuppressWarnings("unchecked")
