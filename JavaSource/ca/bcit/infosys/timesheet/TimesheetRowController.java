@@ -109,4 +109,15 @@ public class TimesheetRowController implements Serializable {
         return query.getResultList();
     }
 
+    /**
+     * delete all rows by timesheet.
+     * @param timesheet object
+     */
+    public void deleteAllRowsByTimesheet(Timesheet timesheet) {
+        Query query = em.createNativeQuery(
+                "delete from TimesheetRow where timesheetid=:timesheetid",
+                TimesheetRow.class);
+        query.setParameter("timesheetid", timesheet.getTimesheetId());
+        query.executeUpdate();
+    }
 }

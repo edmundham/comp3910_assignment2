@@ -532,6 +532,7 @@ public class TimesheetApplication implements Serializable {
             currentTimesheet = timesheetController
                     .getCurrentTimesheet(employee, startWeek, endWeek);
         }
+        timesheetRowController.deleteAllRowsByTimesheet(currentTimesheet);
         for (TimesheetRow detail : details) {
             detail.setTimesheetId(currentTimesheet.getTimesheetId());
             timesheetRowController.merge(detail);
