@@ -29,7 +29,7 @@ public class TimesheetApplication implements Serializable {
     private TimesheetRowController timesheetRowController;
     @Inject
     private EmployeeApplication emApp;
-    private Employee employee = emApp.getCurrentEmployee();
+//    private Employee employee = emApp.getCurrentEmployee();
 
     private List<TimesheetRow> details = new ArrayList<>();
     private List<TimesheetRow> currentSheet = new ArrayList<>();
