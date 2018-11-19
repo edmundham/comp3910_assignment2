@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ca.bcit.infosys.employee.Employee;
+import ca.bcit.infosys.employee.EmployeeController;
 import ca.bcit.infosys.timesheet.Timesheet;
 import ca.bcit.infosys.timesheet.TimesheetController;
 import ca.bcit.infosys.timesheet.TimesheetRow;
@@ -25,20 +26,20 @@ public class TimesheetApplication implements Serializable {
 
     @Inject private TimesheetController timesheetController;
     @Inject private TimesheetRowController timesheetRowController;
+    @Inject private EmployeeController employeeController;
+
+    private Employee currentEmployee;
+    private Date startWeek = getStartWeek();
+    private Date endWeek = getEndWeek();
 
     private List<TimesheetRow> details = new ArrayList<>();
 
     private Timesheet currentTimesheet;
-    private Date startWeek = getStartWeek();
-    private Date endWeek = getEndWeek();
     private int weekNumber;
 
     private List<Timesheet> history;
 
     public TimesheetApplication() {
-        for (int i = 0; i < 5; i++) {
-            details.add(new TimesheetRow());
-        }
     }
 
     public List<Timesheet> getHistory(Employee employee) throws Exception {
@@ -100,6 +101,15 @@ public class TimesheetApplication implements Serializable {
     }
 
     public List<TimesheetRow> getDetails() {
+        Timesheet tempTimesheet = timesheetController.getCurrentTimesheet(currentEmployee, startWeek, endWeek);
+        if (tempTimesheet.getTimesheetId() != null) {
+            details = timesheetRowController.getRowsByCurrentTimesheetId(tempTimesheet.getTimesheetId());
+        }
+        if (details.size() == 0) {
+            for (int i = 0; i < 5; i++) {
+                details.add(new TimesheetRow());
+            }
+        }
         return details;
     }
 
@@ -109,6 +119,14 @@ public class TimesheetApplication implements Serializable {
 
     private List<Timesheet> refreshHistory(Employee employee) {
         return timesheetController.getTimesheetByEmployee(employee);
+    }
+
+    public Employee getCurrentEmployee() {
+        return currentEmployee;
+    }
+
+    public void setCurrentEmployee(String username, String password) {
+        this.currentEmployee = employeeController.login(username, password);
     }
 
     public int getSumOfTimesheet(Timesheet timesheet) {
@@ -271,15 +289,21 @@ public class TimesheetApplication implements Serializable {
     }
 
     public String saveTimesheet(Employee employee) {
-        currentTimesheet.setEmployeeId(employee.getEmployeeId());
-        currentTimesheet.setEndWeek(endWeek);
-        currentTimesheet.setStartWeek(startWeek);
-        timesheetController.add(currentTimesheet);
         currentTimesheet = timesheetController.getCurrentTimesheet(employee, startWeek, endWeek);
+        if (currentTimesheet.getTimesheetId() == null) {
+            timesheetController.add(currentTimesheet);
+            currentTimesheet = timesheetController.getCurrentTimesheet(employee, startWeek, endWeek);
+        } else if (timesheetController.findTimesheetById(currentTimesheet.getTimesheetId()) != null) {
+            timesheetController.merge(currentTimesheet);
+        } else {
+            timesheetController.add(currentTimesheet);
+            currentTimesheet = timesheetController.getCurrentTimesheet(employee, startWeek, endWeek);
+        }
         for (TimesheetRow detail : details) {
             detail.setTimesheetId(currentTimesheet.getTimesheetId());
             timesheetRowController.merge(detail);
         }
+        details = timesheetRowController.getRowsByTimesheet(currentTimesheet);
         return null;
     }
 

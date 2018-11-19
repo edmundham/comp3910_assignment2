@@ -34,6 +34,7 @@
 					<p:commandButton id="loginbutton" value="#{msgs.login}"
 						styleClass="btn btn-primary"
 						action="#{employeeApplication.login(username.value, password.value)}" update="growl">
+                        <f:actionListener binding="#{timesheetApplication.setCurrentEmployee(username.value, password.value)}" />
                     </p:commandButton>
 				</h:form>
 			</div>
